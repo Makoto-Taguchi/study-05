@@ -59,7 +59,8 @@ class Order:
         item_info = self.get_item_data(order_code)
         eel.view_order_js("{0[0]} : 単価 {0[1]} 円 が {1} 個注文登録されました".format(item_info,order_count))
 
-        # view_order関数で使うのでグローバル変数に
+        # オーダーした商品コード、個数をそれぞれリストに格納
+        # main02とmain03両方で使うのでグローバル変数に
         global item_order_list02
         global item_count_list02
 
@@ -68,12 +69,12 @@ class Order:
 
         # item_order_list02 = self.add_item_order_list(order_code)
         # item_count_list02 = self.add_item_count_list(order_count)
-        print(item_order_list02)
-        print(item_count_list02)
 
     
     # オーダー登録した商品一覧表示
     def view_order(self):
+        # 注文の総計
+        # main03とmain04両方で使うため、グローバル変数に
         global sum_price
         sum_price = 0
         # self.sum_price=0
@@ -92,10 +93,8 @@ class Order:
             # 全合計金額を加算
             sum_price += order_price
             self.order_number += 1
-        # txt = "総計：{} 円".format(str(self.sum_price))
         print("総計：{} 円".format(str(sum_price)))
         eel.view_summary_js("総計：{} 円".format(str(sum_price)))
-        # self.write_to_receipt(txt)
     
     def pay_change(self,deposit):
         change = int(deposit) - sum_price
@@ -103,14 +102,11 @@ class Order:
         eel.view_receipt_js("総計：{}円".format(sum_price))
         eel.view_receipt_js("お預かり金額：{}円".format(deposit))
         eel.view_receipt_js("お釣り：{} 円".format(change))
-        # self.write_to_receipt("----------------------------------")
-        # self.write_to_receipt("総計：{} 円".format(str(self.sum_price)))
-        # self.write_to_receipt("お預かり額：{} 円".format(deposit))
-        # self.write_to_receipt("お釣り：{} 円".format(change))
 
 
 # マスタ登録
 def master_from_csv(csv_path):
+    # マスタ登録する商品リスト
     # main01とmain02両方で使うため、グローバル変数に
     global item_master
     item_master = []
