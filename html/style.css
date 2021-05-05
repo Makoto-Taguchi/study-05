@@ -1,0 +1,16 @@
+.input-view-area {
+  width: 400px;
+  height: 150px;
+}
+.order-view-area {
+  width: 400px;
+  height: 150px;
+}
+.summary-view-area {
+  width: 400px;
+  height: 300px;
+}
+.receipt-view-area {
+  width: 400px;
+  height: 100px;
+}

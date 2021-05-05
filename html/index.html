@@ -1,0 +1,81 @@
+<html>
+    <head>
+        <title>eelテスト</title>
+        <link rel="stylesheet" href="./style.css">
+    </head>
+    <body>
+        <h2>POSシステム</h2>
+        <div class="">
+            CSVファイル名：<input type="text" id="csv_name"></input><br>
+            <button id="input_csv">決定</button><br/>
+        </div>
+        <div>
+            <textarea id="input_result" class="input-view-area"></textarea>
+        </div>
+
+        <div class="">
+            商品コード：<input type="text" id="order_code"></input><br>
+            個数：<input type="text" id="order_count"></input><br>
+            <button id="order">オーダー登録</button><br/>
+        </div>
+        <div>
+            <textarea id="order_result" class="order-view-area"></textarea>
+        </div>
+
+        <div class="">
+            <button id="show_summary">合計金額表示</button><br/>
+        </div>
+        <div>
+            <textarea id="summary_result" class="summary-view-area"></textarea>
+        </div>
+
+        <div class="">
+            支払い金額：<input type="text" id="deposit"></input><br>
+            <button id="payment">決定</button><br/>
+        </div>
+        <div>
+            <textarea id="receipt_result" class="receipt-view-area"></textarea>
+        </div>
+
+        <script type="text/javascript" src="./eel.js"></script>
+        <script>
+            input_csv.addEventListener('click', () => {
+                eel.main01(csv_name.value)
+            })
+
+            order.addEventListener('click', () => {
+                eel.main02(order_code.value, order_count.value)
+            })
+
+            show_summary.addEventListener('click', () => {
+                eel.main03()
+            })
+
+            payment.addEventListener('click', () => {
+                eel.main04(deposit.value)
+            })
+
+            // Pythonへ関数登録
+            eel.expose(view_input_js)
+            function view_input_js(txt){
+                input_result.value += txt + "\n"
+            }
+
+            eel.expose(view_order_js)
+            function view_order_js(txt){
+                order_result.value += txt + "\n"
+            }
+
+            eel.expose(view_summary_js)
+            function view_summary_js(txt){
+                summary_result.value += txt + "\n"
+            }
+
+            eel.expose(view_receipt_js)
+            function view_receipt_js(txt){
+                receipt_result.value += txt + "\n"
+            }
+        </script>
+
+    </body>
+</html>
