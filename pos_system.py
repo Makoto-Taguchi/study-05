@@ -34,7 +34,7 @@ class Order:
     # オーダーをコンソールから入力
     def input_order(self,order_code,order_count):
         item_info = self.get_item_data(order_code)
-        eel.view_order_js("{0[0]} : 単価 {0[1]} 円 が {1} 個注文登録されました".format(item_info,order_count))
+        eel.view_order_js(f"{item_info[0]} : 単価 {item_info[1]} 円 が {order_count} 個注文登録されました")
         # 注文した商品コード、個数をリストに追加
         self.item_order_list.append(order_code)
         self.item_count_list.append(order_count)
@@ -43,25 +43,24 @@ class Order:
     def view_order(self):
         self.order_number=1
         for item_order, item_count in zip(self.item_order_list, self.item_count_list):
-            eel.view_summary_js("{}品目目------------------".format(str(self.order_number)))
+            eel.view_summary_js(f"{str(self.order_number)}品目目------------------")
             # item_order_listに格納された商品コードからその商品の金額取得
             order_info = self.get_item_data(item_order)
-            eel.view_summary_js("{0[0]} : 一個 {0[1]} 円".format(order_info))
+            eel.view_summary_js(f"{order_info[0]} : 一個 {order_info[1]} 円")
             # 商品ごとの合計金額算出
             order_price = order_info[1]*int(item_count)
-            eel.view_summary_js("         個数: {0} 合計金額: {1} 円".format(item_count,order_price))
+            eel.view_summary_js(f"         個数: {item_count} 合計金額: {order_price} 円")
             # 全合計金額を加算
             self.sum_price += order_price
             self.order_number += 1
-        print("総計：{} 円".format(str(self.sum_price)))
-        eel.view_summary_js("総計：{} 円".format(str(self.sum_price)))
+        print(f"総計：{str(self.sum_price)} 円")
+        eel.view_summary_js(f"総計：{str(self.sum_price)} 円")
 
     def pay_change(self,deposit):
         change = int(deposit) - self.sum_price
-        print("お釣り：{} 円".format(change))
-        eel.view_receipt_js("総計：{}円".format(self.sum_price))
-        eel.view_receipt_js("お預かり金額：{}円".format(deposit))
-        eel.view_receipt_js("お釣り：{} 円".format(change))
+        eel.view_receipt_js(f"総計：{self.sum_price}円")
+        eel.view_receipt_js(f"お預かり金額：{deposit}円")
+        eel.view_receipt_js(f"お釣り：{change} 円")
 
 
 # マスタ登録
@@ -75,7 +74,7 @@ def master_from_csv(csv_name):
     print(list(df["item_name"])) # (テスト出力)リストを出すには"list"をつける
     for item_code,item_name,price in zip(list(df["item_code"]),list(df["item_name"]),list(df["price"])):
             item_master.append(Item(item_code,item_name,price))
-            eel.view_input_js("{}({})".format(item_name,item_code))
+            eel.view_input_js(f"{item_name}({item_code})")
     eel.view_input_js("------- マスタ登録完了 ---------")
 
     # orderインスタンスはmain02~04で使うためグローバル変数に
