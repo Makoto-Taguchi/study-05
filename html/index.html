@@ -76,8 +76,13 @@
                 receipt_result.value += txt + "\n"
             }
 
-            eel.expose(alert_js)
-            function alert_js(){
+            eel.expose(alert_count_js)
+            function alert_count_js(){
+                alert("個数は1以上を入力して下さい");
+            }
+
+            eel.expose(alert_code_js)
+            function alert_code_js(){
                 alert("その商品コードは登録されていません");
             }
         </script>

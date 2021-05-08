@@ -33,6 +33,14 @@ class Order:
 
     # オーダーをコンソールから入力
     def input_order(self,order_code,order_count):
+        # 1. 入力個数チェック
+        if int(order_count) < 1:
+            eel.alert_count_js()
+            return False
+        else:
+            pass
+
+        # 2. 入力商品コードチェック
         found = False
         for m in self.item_master:
             # 入力したコードがマスタにあれば登録
@@ -48,7 +56,8 @@ class Order:
         if found:
             pass
         else:
-            eel.alert_js()
+            eel.alert_code_js()
+            return False
 
     # オーダー登録した商品一覧表示
     def view_order(self):
