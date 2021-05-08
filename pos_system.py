@@ -5,21 +5,12 @@ import eel
 now = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
 receipt_path = './receipt/receipt_' + now + '.txt'
 
-# master_csv_path = "./master.csv"
-
-# 注文商品コード、個数格納用
-item_order_list02 = []
-item_count_list02 = []
-
 ### 商品クラス
 class Item:
     def __init__(self,item_code,item_name,price):
         self.item_code=item_code
         self.item_name=item_name
         self.price=price
-
-    def get_price(self):
-        return self.price
 
 ### オーダークラス
 class Order:
@@ -36,10 +27,8 @@ class Order:
 
     # オーダー番号から商品情報を取得する（課題１）
     def get_item_data(self,order_code):
-        # print(item_new_order_list)
         for m in self.item_master:
             if order_code==m.item_code:
-                # print(m.item_name + ":" + str(m.price))
                 return m.item_name,m.price
 
     # オーダーをコンソールから入力
@@ -105,7 +94,7 @@ def master_from_csv(csv_name):
 def main02(csv_name,order_code,order_count):
     # オーダー登録
     order.input_order(order_code,order_count)
-    
+
 
 # 「合計金額表示」ボタン押下で呼び出し
 def main03():
@@ -116,6 +105,6 @@ def main03():
 def main04(deposit):
     # 支払いからお釣り計算
     order.pay_change(deposit)
-    
+
 # if __name__ == "__main__":
 #     main()
