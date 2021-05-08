@@ -7,12 +7,12 @@ end_point="index.html"
 size=(700,600)
 
 @ eel.expose
-def main01(csv_name):
-    pos_system.main01(csv_name)
+def master_from_csv(csv_name):
+    pos_system.master_from_csv(csv_name)
 
 @ eel.expose
-def main02(order_code,order_count):
-    pos_system.main02(order_code,order_count)
+def main02(csv_name,order_code,order_count):
+    pos_system.main02(csv_name,order_code,order_count)
 
 @ eel.expose
 def main03():

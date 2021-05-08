@@ -40,11 +40,11 @@
         <script type="text/javascript" src="./eel.js"></script>
         <script>
             input_csv.addEventListener('click', () => {
-                eel.main01(csv_name.value)
+                eel.master_from_csv(csv_name.value)
             })
 
             order.addEventListener('click', () => {
-                eel.main02(order_code.value, order_count.value)
+                eel.main02(csv_name.value, order_code.value, order_count.value)
             })
 
             show_summary.addEventListener('click', () => {
