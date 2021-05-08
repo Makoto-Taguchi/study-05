@@ -33,11 +33,22 @@ class Order:
 
     # オーダーをコンソールから入力
     def input_order(self,order_code,order_count):
-        item_info = self.get_item_data(order_code)
-        eel.view_order_js(f"{item_info[0]} : 単価 {item_info[1]} 円 が {order_count} 個注文登録されました")
-        # 注文した商品コード、個数をリストに追加
-        self.item_order_list.append(order_code)
-        self.item_count_list.append(order_count)
+        found = False
+        for m in self.item_master:
+            # 入力したコードがマスタにあれば登録
+            if order_code in m.item_code:
+                found = True
+                item_info = self.get_item_data(order_code)
+                eel.view_order_js(f"{item_info[0]} : 単価 {item_info[1]} 円 が {order_count} 個注文登録されました")
+                # 注文した商品コード、個数をリストに追加
+                self.item_order_list.append(order_code)
+                self.item_count_list.append(order_count)
+                break
+        # コードがマスタになければアラート表示
+        if found:
+            pass
+        else:
+            eel.alert_js()
 
     # オーダー登録した商品一覧表示
     def view_order(self):
@@ -76,7 +87,7 @@ def master_from_csv(csv_name):
             item_master.append(Item(item_code,item_name,price))
             eel.view_input_js(f"{item_name}({item_code})")
     eel.view_input_js("------- マスタ登録完了 ---------")
-
+    print(list(df["item_code"]))
     # orderインスタンスはmain02~04で使うためグローバル変数に
     global order
     order=Order(item_master)

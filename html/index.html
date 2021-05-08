@@ -75,6 +75,11 @@
             function view_receipt_js(txt){
                 receipt_result.value += txt + "\n"
             }
+
+            eel.expose(alert_js)
+            function alert_js(){
+                alert("その商品コードは登録されていません");
+            }
         </script>
 
     </body>
