@@ -1,87 +1,10 @@
 import pandas as pd
 import datetime
 import eel
+import classTest
 
 now = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
 receipt_path = './receipt/receipt_' + now + '.txt'
-
-### 商品クラス
-class Item:
-    def __init__(self,item_code,item_name,price):
-        self.item_code=item_code
-        self.item_name=item_name
-        self.price=price
-
-### オーダークラス
-class Order:
-    def __init__(self,item_master):
-        self.item_order_list=[]
-        self.item_count_list =[]
-        self.item_master=item_master
-        self.sum_price=0
-
-    # レシートに書き込みする関数
-    def write_to_receipt(self,txt):
-        with open(receipt_path, 'a')as f:
-            f.write(str(txt) + '\n')
-
-    # オーダー番号から商品情報を取得する（課題１）
-    def get_item_data(self,order_code):
-        for m in self.item_master:
-            if order_code==m.item_code:
-                return m.item_name,m.price
-
-    # オーダーをコンソールから入力
-    def input_order(self,order_code,order_count):
-        # 1. 入力個数チェック
-        if int(order_count) < 1:
-            eel.alert_count_js()
-            return False
-        else:
-            pass
-
-        # 2. 入力商品コードチェック
-        found = False
-        for m in self.item_master:
-            # 入力したコードがマスタにあれば登録
-            if order_code in m.item_code:
-                found = True
-                item_info = self.get_item_data(order_code)
-                eel.view_order_js(f"{item_info[0]} : 単価 {item_info[1]} 円 が {order_count} 個注文登録されました")
-                # 注文した商品コード、個数をリストに追加
-                self.item_order_list.append(order_code)
-                self.item_count_list.append(order_count)
-                break
-        # コードがマスタになければアラート表示
-        if found:
-            pass
-        else:
-            eel.alert_code_js()
-            return False
-
-    # オーダー登録した商品一覧表示
-    def view_order(self):
-        self.order_number=1
-        for item_order, item_count in zip(self.item_order_list, self.item_count_list):
-            eel.view_summary_js(f"{str(self.order_number)}品目目------------------")
-            # item_order_listに格納された商品コードからその商品の金額取得
-            order_info = self.get_item_data(item_order)
-            eel.view_summary_js(f"{order_info[0]} : 一個 {order_info[1]} 円")
-            # 商品ごとの合計金額算出
-            order_price = order_info[1]*int(item_count)
-            eel.view_summary_js(f"         個数: {item_count} 合計金額: {order_price} 円")
-            # 全合計金額を加算
-            self.sum_price += order_price
-            self.order_number += 1
-        print(f"総計：{str(self.sum_price)} 円")
-        eel.view_summary_js(f"総計：{str(self.sum_price)} 円")
-
-    def pay_change(self,deposit):
-        change = int(deposit) - self.sum_price
-        eel.view_receipt_js(f"総計：{self.sum_price}円")
-        eel.view_receipt_js(f"お預かり金額：{deposit}円")
-        eel.view_receipt_js(f"お釣り：{change} 円")
-
 
 # マスタ登録
 # CSVファイル名入力後、「決定」ボタン押下で呼び出し
@@ -93,21 +16,14 @@ def master_from_csv(csv_name):
     df=pd.read_csv(csv_path,dtype={"item_code":object})
     print(list(df["item_name"])) # (テスト出力)リストを出すには"list"をつける
     for item_code,item_name,price in zip(list(df["item_code"]),list(df["item_name"]),list(df["price"])):
-            item_master.append(Item(item_code,item_name,price))
+            item_master.append(classTest.Item(item_code,item_name,price))
             eel.view_input_js(f"{item_name}({item_code})")
     eel.view_input_js("------- マスタ登録完了 ---------")
     print(list(df["item_code"]))
     # orderインスタンスはmain02~04で使うためグローバル変数に
     global order
-    order=Order(item_master)
+    order=classTest.Order(item_master)
 
-
-### メイン処理
-# def main01(csv_name):
-#     # マスタ登録
-#     master_csv_path = './' + csv_name
-#     item_master=master_from_csv(master_csv_path)
-#     return item_master
 
 # 商品コード、個数入力後、「オーダー登録」ボタン押下で呼び出し
 def main02(csv_name,order_code,order_count):
@@ -119,6 +35,7 @@ def main02(csv_name,order_code,order_count):
 def main03():
     # オーダー表示
     order.view_order()
+
 
 # 支払い金額入力後、「決定」ボタン押下で呼び出し
 def main04(deposit):
